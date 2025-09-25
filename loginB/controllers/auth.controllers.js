@@ -83,7 +83,6 @@ const signIn = async (req, res) => {
       sameSite:"none",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       httpOnly: true
-      domain: process.env.NODE_ENV === 'production' ? undefined : undefined, // Let browser handle domain
     };
     
     console.log('SignIn - Setting cookie with options:', cookieOptions); // Debug log
@@ -218,10 +217,10 @@ const googleAuth = async (req, res) => {
     const token = await genToken(user._id);
     // set token in cookie
     res.cookie("token", token, {
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+      secure:true,
+      sameSite:"none",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-      httpOnly: true,
+      httpOnly: true
     });
 
     res.status(200).json(user);
