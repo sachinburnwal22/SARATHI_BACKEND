@@ -22,19 +22,26 @@ console.log('Allowed CORS origins:', allowedOrigins); // Debug log
 app.use(cors({
     origin: function (origin, callback) {
         console.log('CORS request from origin:', origin); // Debug log
-        // Allow requests with no origin (like mobile apps or curl requests)
-        if (!origin) return callback(null, true);
+        
+        // Allow requests with no origin (like mobile apps, curl, or direct API calls)
+        if (!origin) {
+            console.log('CORS: Allowing request with no origin'); // Debug log
+            return callback(null, true);
+        }
         
         if (allowedOrigins.indexOf(origin) !== -1) {
             console.log('CORS: Origin allowed:', origin); // Debug log
             callback(null, true);
         } else {
             console.log('CORS: Origin blocked:', origin); // Debug log
+            console.log('CORS: Allowed origins:', allowedOrigins); // Debug log
             callback(new Error('Not allowed by CORS'));
         }
     },
     credentials: true,
-    optionsSuccessStatus: 200
+    optionsSuccessStatus: 200,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
 }));
 
 // Routes of Auth API
