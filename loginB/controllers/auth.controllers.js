@@ -83,9 +83,11 @@ const signIn = async (req, res) => {
       sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       httpOnly: true,
+      domain: process.env.NODE_ENV === 'production' ? undefined : undefined, // Let browser handle domain
     };
     
     console.log('SignIn - Setting cookie with options:', cookieOptions); // Debug log
+    console.log('SignIn - Request origin:', req.headers.origin); // Debug log
     res.cookie("token", token, cookieOptions);
 
     res.status(200).json(user);

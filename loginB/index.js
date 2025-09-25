@@ -17,8 +17,22 @@ const allowedOrigins = [
     process.env.FRONTEND_URL  // Production URL
 ].filter(Boolean); // Remove any undefined values
 
+console.log('Allowed CORS origins:', allowedOrigins); // Debug log
+
 app.use(cors({
-    origin: allowedOrigins,
+    origin: function (origin, callback) {
+        console.log('CORS request from origin:', origin); // Debug log
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        
+        if (allowedOrigins.indexOf(origin) !== -1) {
+            console.log('CORS: Origin allowed:', origin); // Debug log
+            callback(null, true);
+        } else {
+            console.log('CORS: Origin blocked:', origin); // Debug log
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true,
     optionsSuccessStatus: 200
 }));
