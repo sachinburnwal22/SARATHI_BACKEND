@@ -11,8 +11,14 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 // this is for accepting cookies from frontend
+const allowedOrigins = [
+    "http://localhost:3000",  // Local development
+    "http://localhost:5173",  // Vite development
+    process.env.FRONTEND_URL  // Production URL
+].filter(Boolean); // Remove any undefined values
+
 app.use(cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:3000",
+    origin: allowedOrigins,
     credentials: true,
     optionsSuccessStatus: 200
 }));
