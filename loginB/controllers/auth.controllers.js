@@ -46,7 +46,7 @@ const signUp = async (req, res) => {
     // set token in cookie
     res.cookie("token", token, {
       secure: process.env.NODE_ENV === 'production',
-      sameSite: "strict",
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       httpOnly: true,
     });
@@ -80,7 +80,7 @@ const signIn = async (req, res) => {
     // set token in cookie
     res.cookie("token", token, {
       secure: process.env.NODE_ENV === 'production',
-      sameSite: "strict",
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       httpOnly: true,
     });
@@ -206,7 +206,7 @@ const googleAuth = async (req, res) => {
     // set token in cookie
     res.cookie("token", token, {
       secure: process.env.NODE_ENV === 'production',
-      sameSite: "strict",
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       httpOnly: true,
     });
