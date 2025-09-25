@@ -100,7 +100,15 @@ const signIn = async (req, res) => {
 // Sign Out
 const signOut = async (req, res) => {
   try {
-    res.clearCookie("token");
+    // Clear cookie with same options used when setting it
+    const cookieOptions = {
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+      httpOnly: true,
+    };
+    
+    console.log('SignOut - Clearing cookie with options:', cookieOptions); // Debug log
+    res.clearCookie("token", cookieOptions);
     return res.status(200).json({ message: "LogOut successfully" });
   } catch (err) {
     console.error(err);
