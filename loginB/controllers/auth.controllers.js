@@ -78,12 +78,15 @@ const signIn = async (req, res) => {
     // generate token
     const token = await genToken(user._id);
     // set token in cookie
-    res.cookie("token", token, {
+    const cookieOptions = {
       secure: process.env.NODE_ENV === 'production',
       sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       httpOnly: true,
-    });
+    };
+    
+    console.log('SignIn - Setting cookie with options:', cookieOptions); // Debug log
+    res.cookie("token", token, cookieOptions);
 
     res.status(200).json(user);
   } catch (err) {
